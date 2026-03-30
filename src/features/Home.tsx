@@ -23,7 +23,10 @@ export default function Home() {
 
   useEffect(() => {
     if (index < greetings.length) {
-      const timer = setTimeout(() => setIndex((i) => i + 1), 250); // 1s per greeting
+      const timer = setTimeout(
+        () => setIndex((i) => i + 1),
+        index === 0 ? 500 : 150,
+      );
       return () => clearTimeout(timer);
     } else if (phase === "intro") {
       const timer = setTimeout(() => setPhase("transition"), 250);
@@ -31,32 +34,47 @@ export default function Home() {
     }
   }, [index, phase]);
 
+  useEffect(() => {
+    if (phase !== "transition") {
+      return;
+    }
+
+    const timer = setTimeout(() => setPhase("main"), 1000);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
   return (
-    <div className="relative w-screen h-screen overflow-x-hidden bg-gray-200">
-      {phase === "transition" && (
+    <div className="relative min-h-screen w-screen overflow-x-hidden bg-background">
+      {phase !== "intro" && (
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          className="z-0"
+          className={
+            phase === "transition"
+              ? "absolute inset-0 z-0 overflow-hidden bg-background"
+              : "relative z-0 bg-background"
+          }
         >
           <Header />
           <Body />
         </motion.div>
       )}
 
-      <motion.div
-        initial={{ y: 0 }}
-        animate={{
-          y: phase === "transition" ? "-100%" : 0,
-        }}
-        transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-        className="absolute top-0 left-0 w-full h-full z-30 bg-white flex items-center justify-center"
-      >
-        <h1 className="text-4xl font-bold text-black animate-fadeInOut">
-          {greetings[Math.min(index, greetings.length - 1)]}
-        </h1>
-      </motion.div>
+      {phase !== "main" && (
+        <motion.div
+          initial={{ y: 0 }}
+          animate={{
+            y: phase === "transition" ? "-100%" : 0,
+          }}
+          transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+          className="fixed inset-0 z-30 flex items-center justify-center bg-background"
+        >
+          <h1 className="text-4xl font-bold text-white animate-fadeInOut">
+            {greetings[Math.min(index, greetings.length - 1)]}
+          </h1>
+        </motion.div>
+      )}
     </div>
   );
 }
