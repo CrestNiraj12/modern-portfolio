@@ -47,13 +47,13 @@ export default function Home() {
     <div className="relative min-h-screen w-screen overflow-x-hidden bg-background">
       {phase !== "intro" && (
         <motion.div
-          initial={{ y: "100%" }}
+          initial={{ y: "50%" }}
           animate={{ y: 0 }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           className={
             phase === "transition"
-              ? "absolute inset-0 z-0 overflow-hidden bg-background"
-              : "relative z-0 bg-background"
+              ? "absolute inset-0 z-20 overflow-hidden bg-background"
+              : "relative z-20 bg-background"
           }
         >
           <Header />
@@ -63,9 +63,11 @@ export default function Home() {
 
       {phase !== "main" && (
         <motion.div
-          initial={{ y: 0 }}
+          initial={{ y: 0, opacity: 0 }}
           animate={{
             y: phase === "transition" ? "-100%" : 0,
+            borderRadius: phase === "transition" ? "50%" : "0%",
+            opacity: 100,
           }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           className="fixed inset-0 z-30 flex items-center justify-center bg-background"

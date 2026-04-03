@@ -63,9 +63,7 @@ const Header = () => {
           <img
             src={Niraj.src}
             alt="Niraj Shrestha"
-            width={500}
-            height={600}
-            className="h-auto w-125 max-w-none object-contain"
+            className="h-auto w-[32vw] max-w-none object-contain"
           />
         </motion.div>
         <motion.div
