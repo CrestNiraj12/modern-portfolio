@@ -28,8 +28,9 @@ const Header = ({ velocity }: HeaderProps) => {
   const { scrollY } = useScroll();
 
   const smoothVelocity = useSpring(velocity, {
-    stiffness: 120,
-    damping: 20,
+    stiffness: 200,
+    damping: 40,
+    mass: 2,
   });
 
   useAnimationFrame(() => {
@@ -46,7 +47,7 @@ const Header = ({ velocity }: HeaderProps) => {
     lastScrollY.current = y;
 
     const isAtTop = y < 50;
-    const targetVelocity = isAtTop ? 1 : delta * -1;
+    const targetVelocity = isAtTop ? 1 : delta * 0.5 * -1;
     velocity.set(targetVelocity);
 
     let next = x.get() + smoothVelocity.get();
