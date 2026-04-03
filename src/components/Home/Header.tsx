@@ -4,15 +4,62 @@ import { Navbar } from "@/components";
 import { MoveDownRightIcon } from "lucide-react";
 import {
   motion,
+  MotionValue,
+  useAnimationFrame,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
 } from "motion/react";
+import { useRef } from "react";
 
-const Header = () => {
+interface HeaderProps {
+  velocity: MotionValue<number>;
+}
+
+const Header = ({ velocity }: HeaderProps) => {
   const shouldReduceMotion = useReducedMotion();
+  const x = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const scrollDirectionRef = useRef(1);
+  const lastScrollY = useRef(1);
+
   const { scrollY } = useScroll();
+
+  const smoothVelocity = useSpring(velocity, {
+    stiffness: 120,
+    damping: 20,
+  });
+
+  useAnimationFrame(() => {
+    const y = scrollY.get();
+    const lastY = lastScrollY.current;
+    const delta = y - lastY;
+
+    if (delta > 0) {
+      scrollDirectionRef.current = -1;
+    } else if (delta < 0) {
+      scrollDirectionRef.current = 1;
+    }
+
+    lastScrollY.current = y;
+
+    const isAtTop = y < 50;
+    const targetVelocity = isAtTop ? 1 : delta * -1;
+    velocity.set(targetVelocity);
+
+    let next = x.get() + smoothVelocity.get();
+    const width = (containerRef.current?.scrollWidth ?? 0) / 2;
+    if (next >= 0) {
+      next = -width;
+    } else if (next <= -width) {
+      next = 0;
+    }
+
+    x.set(next);
+  });
+
   const smoothScrollY = useSpring(scrollY, {
     stiffness: 140,
     damping: 28,
@@ -41,17 +88,15 @@ const Header = () => {
       <div className="row-start-2 max-h-[calc(100vh-20px)] overflow-hidden">
         <motion.div
           style={{ y: foregroundY }}
-          className="absolute left-0 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-r-full bg-gray-400 p-4 will-change-transform"
+          className="absolute left-0 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-r-full bg-gray-400 w-[16vw] h-[12vh] p-4 will-change-transform"
         >
-          <div className="flex-auto text-lg/6 w-40 pl-8">
+          <div className="flex-auto text-lg/6  pl-8">
             <p className="text-black">Located in the Himalayas</p>
           </div>
-          <div className="flex-none bg-gray-500 place-items-center h-16 w-16 rounded-full p-4">
+          <div className="flex-none bg-gray-500 place-items-center h-[4vw] w-[4vw] rounded-full p-4">
             <img
               src={NepalFlag.src}
               alt="Nepal flag"
-              width={30}
-              height={30}
               className="h-full w-full object-contain"
             />
           </div>
@@ -79,17 +124,21 @@ const Header = () => {
           </p>
         </motion.div>
         <div className="absolute bottom-10 left-0 right-0 overflow-hidden whitespace-nowrap">
-          <motion.div className="will-change-transform">
-            <div className="flex w-max animate-marquee">
-              <span className="mx-4 shrink-0 text-[10rem] text-gray-200 leading-[1.1]">
-                Niraj Shrestha &mdash; Niraj Shrestha &mdash;
-              </span>
-              <span
-                aria-hidden="true"
-                className="mx-4 shrink-0 text-[10rem] text-gray-200 leading-[1.1]"
-              >
-                Niraj Shrestha &mdash; Niraj Shrestha &mdash;
-              </span>
+          <motion.div
+            ref={containerRef}
+            style={{ x }}
+            className="will-change-transform"
+          >
+            <div className="flex w-max">
+              {[0, 1].map((_, index) => (
+                <span
+                  key={index}
+                  aria-hidden="true"
+                  className="mx-4 shrink-0 text-[10rem] text-gray-200 leading-[1.1]"
+                >
+                  Niraj Shrestha &mdash; Niraj Shrestha &mdash;
+                </span>
+              ))}
             </div>
           </motion.div>
         </div>

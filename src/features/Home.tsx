@@ -1,7 +1,5 @@
-"use client";
-
 import { Body, Header } from "@/components/Home";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
 
 const greetings = [
@@ -20,6 +18,7 @@ const greetings = [
 export default function Home() {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"intro" | "transition" | "main">("intro");
+  const velocity = useMotionValue(0);
 
   useEffect(() => {
     if (index < greetings.length) {
@@ -43,8 +42,9 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [phase]);
 
+
   return (
-    <div className="relative min-h-screen w-screen overflow-x-hidden bg-background">
+    <div className="relative min-h-screen w-screen bg-background">
       {phase !== "intro" && (
         <motion.div
           initial={{ y: "50%" }}
@@ -56,7 +56,7 @@ export default function Home() {
               : "relative z-20 bg-background"
           }
         >
-          <Header />
+          <Header velocity={velocity} />
           <Body />
         </motion.div>
       )}
