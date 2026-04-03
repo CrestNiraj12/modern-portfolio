@@ -12,6 +12,8 @@ export interface MagneticAnimationReturnType {
   ref: Ref<HTMLDivElement>;
   springX: MotionValue<number>;
   springY: MotionValue<number>;
+  textX: MotionValue<number>;
+  textY: MotionValue<number>;
   handleMouseMove: (e: React.MouseEvent) => void;
   reset: () => void;
 }

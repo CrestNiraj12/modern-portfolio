@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 export const Body = () => {
   const { foregroundY } = useScrollAnimation();
-  const { ref, springX, springY, handleMouseMove, reset } =
+  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
     useMagneticAnimation();
 
   return (
@@ -31,7 +31,9 @@ export const Body = () => {
               style={{ x: springX, y: springY }}
               className="flex justify-center items-center rounded-full bg-black w-50 h-50"
             >
-              <p className="text-white">About Me</p>
+              <motion.p style={{ x: textX, y: textY }} className="text-white">
+                About Me
+              </motion.p>
             </motion.div>
           </div>
         </div>

@@ -48,6 +48,9 @@ const useMagneticAnimation = (
   const springX = useSpring(x, { stiffness: 150, damping: 15 });
   const springY = useSpring(y, { stiffness: 150, damping: 15 });
 
+  const textX = useTransform(springX, (v) => v * 0.5);
+  const textY = useTransform(springY, (v) => v * 0.5);
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
 
@@ -75,7 +78,7 @@ const useMagneticAnimation = (
     y.set(0);
   };
 
-  return { ref, springX, springY, handleMouseMove, reset };
+  return { ref, springX, springY, textX, textY, handleMouseMove, reset };
 };
 
 export { useMagneticAnimation, useScrollAnimation };
