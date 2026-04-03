@@ -1,3 +1,4 @@
+import { ANIMATION_CONSTANTS } from "@/constants";
 import type {
   MagneticAnimationReturnType,
   ScrollAnimationReturnType,
@@ -11,45 +12,69 @@ import {
 } from "motion/react";
 import { useRef } from "react";
 
+const {
+  SCROLL: {
+    stiffness,
+    damping,
+    mass,
+    scrollRange,
+    foregroundY: fgY,
+    backgroundY: bgY,
+  },
+  MAGNETIC: {
+    defaultStrength,
+    defaultRadius,
+    springStiffness,
+    springDamping,
+    textMultiplier,
+  },
+} = ANIMATION_CONSTANTS;
+
 const useScrollAnimation = (): ScrollAnimationReturnType => {
   const { scrollY } = useScroll();
   const shouldReduceMotion = useReducedMotion();
 
   const smoothScrollY = useSpring(scrollY, {
-    stiffness: 140,
-    damping: 28,
-    mass: 0.25,
+    stiffness,
+    damping,
+    mass,
   });
 
   const foregroundY = useTransform(
     smoothScrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, -220],
+    scrollRange,
+    shouldReduceMotion ? fgY.reducedMotion : fgY.normal,
   );
 
   const backgroundY = useTransform(
     smoothScrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, 440],
+    scrollRange,
+    shouldReduceMotion ? bgY.reducedMotion : bgY.normal,
   );
 
   return { scrollY, smoothScrollY, foregroundY, backgroundY };
 };
 
 const useMagneticAnimation = (
-  strength = 0.3,
-  radius = 150,
+  strength = defaultStrength,
+  radius = defaultRadius,
 ): MagneticAnimationReturnType => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const springX = useSpring(x, { stiffness: 150, damping: 15 });
-  const springY = useSpring(y, { stiffness: 150, damping: 15 });
+  const springX = useSpring(x, {
+    stiffness: springStiffness,
+    damping: springDamping,
+  });
+  const springY = useSpring(y, {
+    stiffness: springStiffness,
+    damping: springDamping,
+  });
 
-  const textX = useTransform(springX, (v) => v * 0.5);
-  const textY = useTransform(springY, (v) => v * 0.5);
+  const textX = useTransform(springX, (v) => v * textMultiplier);
+  const textY = useTransform(springY, (v) => v * textMultiplier);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
