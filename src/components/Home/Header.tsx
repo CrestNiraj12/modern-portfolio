@@ -24,7 +24,6 @@ const Header = ({ velocity }: HeaderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollDirectionRef = useRef(1);
   const lastScrollY = useRef(1);
-
   const { scrollY } = useScroll();
 
   const smoothVelocity = useSpring(velocity, {
@@ -47,7 +46,9 @@ const Header = ({ velocity }: HeaderProps) => {
     lastScrollY.current = y;
 
     const isAtTop = y < 50;
-    const targetVelocity = isAtTop ? 1 : delta * 0.5 * -1;
+    const targetVelocity = isAtTop
+      ? 1
+      : scrollDirectionRef.current + delta * 0.3 * -1;
     velocity.set(targetVelocity);
 
     let next = x.get() + smoothVelocity.get();
@@ -70,8 +71,9 @@ const Header = ({ velocity }: HeaderProps) => {
   const backgroundY = useTransform(
     smoothScrollY,
     [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, 140],
+    shouldReduceMotion ? [0, 0] : [0, 440],
   );
+
   const foregroundY = useTransform(
     smoothScrollY,
     [0, 900],
@@ -79,17 +81,20 @@ const Header = ({ velocity }: HeaderProps) => {
   );
 
   return (
-    <div className="relative bg-primary grid grid-rows-[20px_1fr] items-center justify-items-center min-h-screen overflow-hidden p-12 pb-20 gap-16">
+    <motion.section
+      style={{ y: foregroundY }}
+      className="relative bg-primary grid grid-rows-[20px_1fr] items-center justify-items-center min-h-[105vh] overflow-hidden p-12 pb-20 gap-16"
+    >
       <motion.div
         style={{ y: foregroundY }}
         className="absolute py-10 px-12 w-full top-0 left-1/2 z-0 -translate-x-1/2 will-change-transform"
       >
         <Navbar />
       </motion.div>
-      <div className="row-start-2 max-h-[calc(100vh-20px)] overflow-hidden">
+      <div className="row-start-2 overflow-hidden">
         <motion.div
           style={{ y: foregroundY }}
-          className="absolute left-0 top-1/2 z-10 flex -translate-y-1/2 items-center rounded-r-full bg-gray-400 w-[16vw] h-[12vh] p-4 will-change-transform"
+          className="absolute left-0 top-1/2 z-10 flex -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vw] min-w-70 h-[12vh] p-4 will-change-transform"
         >
           <div className="flex-auto text-lg/6  pl-8">
             <p className="text-black">Located in the Himalayas</p>
@@ -109,7 +114,7 @@ const Header = ({ velocity }: HeaderProps) => {
           <img
             src={Niraj.src}
             alt="Niraj Shrestha"
-            className="h-auto w-[32vw] max-w-none object-contain"
+            className="h-auto w-[38vw] max-h-[105vh] max-w-none object-contain"
           />
         </motion.div>
         <motion.div
@@ -124,7 +129,7 @@ const Header = ({ velocity }: HeaderProps) => {
             <br />& Fullstack developer
           </p>
         </motion.div>
-        <div className="absolute bottom-10 left-0 right-0 overflow-hidden whitespace-nowrap">
+        <div className="absolute bottom-25 left-0 right-0 overflow-hidden whitespace-nowrap">
           <motion.div
             ref={containerRef}
             style={{ x }}
@@ -144,7 +149,7 @@ const Header = ({ velocity }: HeaderProps) => {
           </motion.div>
         </div>
       </div>
-    </div>
+    </motion.section>
   );
 };
 

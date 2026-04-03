@@ -1,5 +1,6 @@
 import { Body, Header } from "@/components/Home";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { cn } from "@/utils/cn";
+import { motion, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
 
 const greetings = [
@@ -42,19 +43,19 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [phase]);
 
-
   return (
-    <div className="relative min-h-screen w-screen bg-background">
+    <div className="relative min-h-screen w-screen bg-black snap-y snap-mandatory">
       {phase !== "intro" && (
         <motion.div
-          initial={{ y: "50%" }}
-          animate={{ y: 0 }}
+          initial={{ y: "10%" }}
+          animate={{ y: "0%" }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          className={
+          className={cn(
+            "z-20",
             phase === "transition"
-              ? "absolute inset-0 z-20 overflow-hidden bg-background"
-              : "relative z-20 bg-background"
-          }
+              ? "absolute inset-0 overflow-hidden"
+              : "relative",
+          )}
         >
           <Header velocity={velocity} />
           <Body />
@@ -63,16 +64,15 @@ export default function Home() {
 
       {phase !== "main" && (
         <motion.div
-          initial={{ y: 0, opacity: 0 }}
+          initial={{ y: 0 }}
           animate={{
             y: phase === "transition" ? "-100%" : 0,
             borderRadius: phase === "transition" ? "50%" : "0%",
-            opacity: 100,
           }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          className="fixed inset-0 z-30 flex items-center justify-center bg-background"
+          className="fixed inset-0 z-30 flex items-center justify-center bg-black"
         >
-          <h1 className="text-4xl font-bold text-white animate-fadeInOut">
+          <h1 className="text-4xl font-bold text-white animate-fadeOut">
             {greetings[Math.min(index, greetings.length - 1)]}
           </h1>
         </motion.div>

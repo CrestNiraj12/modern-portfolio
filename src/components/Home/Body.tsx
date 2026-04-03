@@ -1,8 +1,32 @@
 import { Divider } from "@/components";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 
 export const Body = () => {
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  const smoothScrollY = useSpring(scrollY, {
+    stiffness: 140,
+    damping: 28,
+    mass: 0.25,
+  });
+
+  const foregroundY = useTransform(
+    smoothScrollY,
+    [0, 900],
+    shouldReduceMotion ? [0, 0] : [0, -220],
+  );
+
   return (
-    <div className="flex flex-col px-40 py-40 bg-gray-100 text-black">
+    <motion.section
+      style={{ y: foregroundY }}
+      className="relative flex flex-col p-40 text-black will-change-transform bg-background"
+    >
       <div className="px-20">
         <div className="flex justify-between">
           <h2 className="text-3xl/12 w-150">
@@ -22,6 +46,6 @@ export const Body = () => {
         </div>
       </div>
       <Divider margin="my-[20px]" />
-    </div>
+    </motion.section>
   );
 };

@@ -5,7 +5,7 @@ const Navbar = () => {
         <p>&copy; Niraj Shrestha</p>
       </div>
       <div className="flex-2" />
-      <ol className="flex-1 flex flex-row items-center justify-between">
+      <ol className="max-w-60 flex-1 flex flex-row items-center justify-between">
         <li>Work</li>
         <li>About</li>
         <li>Contact</li>
