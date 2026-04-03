@@ -14,7 +14,6 @@ export const ANIMATION_CONSTANTS = {
     },
   },
 
-  // Magnetic animation constants
   MAGNETIC: {
     defaultStrength: 0.3,
     defaultRadius: 150,
