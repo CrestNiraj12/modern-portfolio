@@ -1,9 +1,11 @@
 import { Divider } from "@/components";
-import { useScrollAnimation } from "@/hooks/animation";
+import { useMagneticAnimation, useScrollAnimation } from "@/hooks/animation";
 import { motion } from "motion/react";
 
 export const Body = () => {
   const { foregroundY } = useScrollAnimation();
+  const { ref, springX, springY, handleMouseMove, reset } =
+    useMagneticAnimation();
 
   return (
     <motion.section
@@ -23,8 +25,14 @@ export const Body = () => {
         </div>
         <div className="flex w-full justify-between items-end">
           <h6 className="text-sm text-gray-500 uppercase">Recent Work</h6>
-          <div className="flex justify-center items-center rounded-full bg-black w-50 h-50">
-            <p className="text-white">About Me</p>
+          <div onMouseMove={handleMouseMove} onMouseLeave={reset}>
+            <motion.div
+              ref={ref}
+              style={{ x: springX, y: springY }}
+              className="flex justify-center items-center rounded-full bg-black w-50 h-50"
+            >
+              <p className="text-white">About Me</p>
+            </motion.div>
           </div>
         </div>
       </div>
