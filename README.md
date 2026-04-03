@@ -1,46 +1,64 @@
-# Astro Starter Kit: Basics
+# Niraj Shrestha Portfolio
 
-```sh
-bun create astro@latest -- --template basics
+A personal portfolio website built with Astro, React, and Motion for smooth animations.
+
+## Overview
+
+This portfolio showcases my work as a Software Engineer and Fullstack developer. The site features smooth animations, interactive elements, and a clean, modern design.
+
+## Features
+
+- Built with Astro and React
+- Smooth animations using Motion
+- Responsive design
+- Interactive header with parallax effects
+- Multilingual greeting animation
+- Modern, clean UI
+
+## Development
+
+### Installation
+
+```bash
+bun install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Development Server
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```bash
+bun dev
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Starts local dev server at `localhost:4321`
 
-## 🧞 Commands
+### Build
 
-All commands are run from the root of the project, from a terminal:
+```bash
+bun build
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+Builds your production site to `./dist/`
 
-## 👀 Want to learn more?
+### Preview
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+bun preview
+```
+
+Preview your build locally before deploying
+
+## Technologies Used
+
+- [Astro](https://astro.build) - Static site builder
+- [React](https://react.dev) - UI library
+- [Motion](https://motion.dev) - Animation library
+- [TypeScript](https://www.typescriptlang.org) - Type safety
+- [Bun](https://bun.sh) - Fast JavaScript runtime
+
+## Deployment
+
+The site can be deployed to any static hosting platform (Vercel, Netlify, Cloudflare Pages, etc.) by building the project and deploying the `dist/` folder.
+
+## License
+
+MIT
