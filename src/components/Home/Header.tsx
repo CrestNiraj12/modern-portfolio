@@ -1,16 +1,14 @@
 import NepalFlag from "@/assets/nepal.gif";
 import Niraj from "@/assets/niraj.png";
 import { Navbar } from "@/components";
+import { useScrollAnimation } from "@/hooks/animation";
 import { MoveDownRightIcon } from "lucide-react";
 import {
   motion,
   MotionValue,
   useAnimationFrame,
   useMotionValue,
-  useReducedMotion,
-  useScroll,
   useSpring,
-  useTransform,
 } from "motion/react";
 import { useRef } from "react";
 
@@ -19,12 +17,11 @@ interface HeaderProps {
 }
 
 const Header = ({ velocity }: HeaderProps) => {
-  const shouldReduceMotion = useReducedMotion();
+  const { scrollY, foregroundY, backgroundY } = useScrollAnimation();
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollDirectionRef = useRef(1);
   const lastScrollY = useRef(1);
-  const { scrollY } = useScroll();
 
   const smoothVelocity = useSpring(velocity, {
     stiffness: 200,
@@ -61,24 +58,6 @@ const Header = ({ velocity }: HeaderProps) => {
 
     x.set(next);
   });
-
-  const smoothScrollY = useSpring(scrollY, {
-    stiffness: 140,
-    damping: 28,
-    mass: 0.25,
-  });
-
-  const backgroundY = useTransform(
-    smoothScrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, 440],
-  );
-
-  const foregroundY = useTransform(
-    smoothScrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, -220],
-  );
 
   return (
     <motion.section

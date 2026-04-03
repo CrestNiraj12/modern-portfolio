@@ -1,26 +1,9 @@
 import { Divider } from "@/components";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { useScrollAnimation } from "@/hooks/animation";
+import { motion } from "motion/react";
 
 export const Body = () => {
-  const shouldReduceMotion = useReducedMotion();
-  const { scrollY } = useScroll();
-  const smoothScrollY = useSpring(scrollY, {
-    stiffness: 140,
-    damping: 28,
-    mass: 0.25,
-  });
-
-  const foregroundY = useTransform(
-    smoothScrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [0, -220],
-  );
+  const { foregroundY } = useScrollAnimation();
 
   return (
     <motion.section
