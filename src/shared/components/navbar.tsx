@@ -1,3 +1,5 @@
+import { NavItem } from "./NavItem";
+
 export const Navbar = () => {
   return (
     <nav className="w-full flex flex-row justify-between items-center text-gray-200">
@@ -6,9 +8,15 @@ export const Navbar = () => {
       </div>
       <div className="flex-2" />
       <ol className="max-w-60 flex-1 flex flex-row items-center justify-between">
-        <li>Work</li>
-        <li>About</li>
-        <li>Contact</li>
+        <li>
+          <NavItem text="Work" />
+        </li>
+        <li>
+          <NavItem text="About" />
+        </li>
+        <li>
+          <NavItem text="Contact" />
+        </li>
       </ol>
     </nav>
   );
