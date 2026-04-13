@@ -1,0 +1,8 @@
+---
+import Home from "@/features/Home"
+import { getPinnedRepos } from "@/features/Home/services"
+
+const projects = await getPinnedRepos();
+---
+
+<Home client:load projects={projects} />

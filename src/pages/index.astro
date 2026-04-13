@@ -1,9 +1,9 @@
 ---
+import HomePage from '@/features/Home/HomePage.astro';
 import Layout from '../layouts/Layout.astro';
-import Home from "@/features/Home"
 import "../styles/global.css";
 ---
 
 <Layout>
-	<Home client:load />
+  <HomePage />
 </Layout>

@@ -1,11 +1,15 @@
-import { Divider } from "@/components";
-import { useMagneticAnimation, useScrollAnimation } from "@/hooks/animation";
+import { AnimatedButton } from "@/shared/components";
+import { useScrollAnimation } from "@/shared/hooks/animation";
+import type { Project } from "@/shared/types";
 import { motion } from "motion/react";
+import { Projects } from "./Projects";
 
-export const Body = () => {
+interface BodyProps {
+  projects: Project[];
+}
+
+export const Body = ({ projects }: BodyProps) => {
   const { foregroundY } = useScrollAnimation();
-  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
-    useMagneticAnimation();
 
   return (
     <motion.section
@@ -25,20 +29,10 @@ export const Body = () => {
         </div>
         <div className="flex w-full justify-between items-end">
           <h6 className="text-sm text-gray-500 uppercase">Recent Work</h6>
-          <div onMouseMove={handleMouseMove} onMouseLeave={reset}>
-            <motion.div
-              ref={ref}
-              style={{ x: springX, y: springY }}
-              className="flex justify-center items-center rounded-full bg-black w-50 h-50"
-            >
-              <motion.p style={{ x: textX, y: textY }} className="text-white">
-                About Me
-              </motion.p>
-            </motion.div>
-          </div>
+          <AnimatedButton text="About me" />
         </div>
       </div>
-      <Divider margin="my-[20px]" />
+      <Projects projects={projects} />
     </motion.section>
   );
 };

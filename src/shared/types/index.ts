@@ -17,3 +17,10 @@ export interface MagneticAnimationReturnType {
   handleMouseMove: (e: React.MouseEvent) => void;
   reset: () => void;
 }
+
+export type Project = {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+};

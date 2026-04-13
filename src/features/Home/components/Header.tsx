@@ -1,7 +1,7 @@
 import NepalFlag from "@/assets/nepal.gif";
 import Niraj from "@/assets/niraj.png";
-import { Navbar } from "@/components";
-import { useScrollAnimation } from "@/hooks/animation";
+import { Navbar } from "@/shared/components";
+import { useScrollAnimation } from "@/shared/hooks/animation";
 import { MoveDownRightIcon } from "lucide-react";
 import {
   motion,

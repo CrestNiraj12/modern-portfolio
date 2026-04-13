@@ -1,4 +1,4 @@
-const Navbar = () => {
+export const Navbar = () => {
   return (
     <nav className="w-full flex flex-row justify-between items-center text-gray-200">
       <div className="flex-3">
@@ -13,5 +13,3 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export { Navbar };

@@ -1,22 +1,15 @@
-import { Body, Header } from "@/components/Home";
-import { cn } from "@/utils/cn";
+import { greetings } from "@/constants";
+import { Body, Header } from "@/features/Home/components";
+import type { Project } from "@/shared/types";
+import { cn } from "@/shared/utils/cn";
 import { motion, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
 
-const greetings = [
-  "Hello",
-  "こんにちは",
-  "Hola",
-  "Bonjour",
-  "नमस्ते",
-  "안녕하세요",
-  "Olá",
-  "Здравствуйте",
-  "مرحبا",
-  "你好",
-];
+interface HomeProps {
+  projects: Project[];
+}
 
-export default function Home() {
+export default function Home({ projects }: HomeProps) {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"intro" | "transition" | "main">("intro");
   const velocity = useMotionValue(0);
@@ -58,7 +51,7 @@ export default function Home() {
           )}
         >
           <Header velocity={velocity} />
-          <Body />
+          <Body projects={projects} />
         </motion.div>
       )}
 

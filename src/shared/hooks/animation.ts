@@ -2,7 +2,7 @@ import { ANIMATION_CONSTANTS } from "@/constants";
 import type {
   MagneticAnimationReturnType,
   ScrollAnimationReturnType,
-} from "@/types";
+} from "@/shared/types";
 import {
   useMotionValue,
   useReducedMotion,

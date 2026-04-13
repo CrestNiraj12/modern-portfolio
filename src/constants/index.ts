@@ -1,3 +1,16 @@
+export const greetings = [
+  "Hello",
+  "こんにちは",
+  "Hola",
+  "Bonjour",
+  "नमस्ते",
+  "안녕하세요",
+  "Olá",
+  "Здравствуйте",
+  "مرحبا",
+  "你好",
+];
+
 export const ANIMATION_CONSTANTS = {
   SCROLL: {
     stiffness: 140,
@@ -25,4 +38,3 @@ export const ANIMATION_CONSTANTS = {
 
 export type ScrollAnimationConstants = typeof ANIMATION_CONSTANTS.SCROLL;
 export type MagneticAnimationConstants = typeof ANIMATION_CONSTANTS.MAGNETIC;
-
