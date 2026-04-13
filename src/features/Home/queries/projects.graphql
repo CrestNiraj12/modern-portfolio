@@ -1,6 +1,6 @@
 query GetPinnedProjects {
   user(login: "CrestNiraj12") {
-    pinnedItems(first: 6, types: REPOSITORY) {
+    pinnedItems(first: 4, types: REPOSITORY) {
       nodes {
         ... on Repository {
           id 
