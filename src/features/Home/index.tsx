@@ -1,6 +1,7 @@
 import { greetings } from "@/constants";
 import { Body, Header } from "@/features/Home/components";
-import type { Project } from "@/shared/types";
+import { Footer } from "@/screens/Home/components/Footer";
+import type { Project, TransitionPhase } from "@/shared/types";
 import { cn } from "@/shared/utils/cn";
 import { motion, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ interface HomeProps {
 
 export default function Home({ projects }: HomeProps) {
   const [index, setIndex] = useState(0);
-  const [phase, setPhase] = useState<"intro" | "transition" | "main">("intro");
+  const [phase, setPhase] = useState<TransitionPhase>("intro");
   const velocity = useMotionValue(0);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function Home({ projects }: HomeProps) {
   }, [phase]);
 
   return (
-    <div className="relative min-h-screen w-screen bg-black snap-y snap-mandatory">
+    <div className="relative w-screen min-h-screen bg-black snap-y snap-mandatory">
       {phase !== "intro" && (
         <motion.div
           initial={{ y: "10%" }}
@@ -52,6 +53,7 @@ export default function Home({ projects }: HomeProps) {
         >
           <Header velocity={velocity} />
           <Body projects={projects} />
+          <Footer />
         </motion.div>
       )}
 

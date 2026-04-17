@@ -1,6 +1,8 @@
 import type { MotionValue } from "motion";
 import type { Ref } from "react";
 
+export type TransitionPhase = "intro" | "transition" | "main";
+
 export interface ScrollAnimationReturnType {
   scrollY: MotionValue<number>;
   smoothScrollY: MotionValue<number>;

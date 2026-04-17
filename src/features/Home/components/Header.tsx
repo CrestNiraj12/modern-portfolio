@@ -73,12 +73,12 @@ const Header = ({ velocity }: HeaderProps) => {
       <div className="row-start-2 overflow-hidden">
         <motion.div
           style={{ y: foregroundY }}
-          className="absolute left-0 top-1/2 z-10 flex -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vw] min-w-70 h-[12vh] p-4 will-change-transform"
+          className="absolute left-0 top-1/2 z-10 flex -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vh] min-w-70 h-25 p-4 will-change-transform"
         >
           <div className="flex-auto text-lg/6  pl-8">
             <p className="text-black">Located in the Himalayas</p>
           </div>
-          <div className="flex-none bg-gray-500 place-items-center h-[4vw] w-[4vw] rounded-full p-4">
+          <div className="flex-none bg-gray-500 place-items-center h-20 w-20 rounded-full p-4">
             <img
               src={NepalFlag.src}
               alt="Nepal flag"
@@ -93,7 +93,7 @@ const Header = ({ velocity }: HeaderProps) => {
           <img
             src={Niraj.src}
             alt="Niraj Shrestha"
-            className="h-auto w-[38vw] max-h-[105vh] max-w-none object-contain"
+            className="h-auto w-screen max-h-[105vh] max-w-none object-contain"
           />
         </motion.div>
         <motion.div
