@@ -7,12 +7,14 @@ interface AnimatedButtonProps {
   text: string;
   variant?: "default" | "pill";
   className?: string;
+  overlayClassName?: string;
 }
 
 export const AnimatedButton = ({
   text,
   variant = "default",
   className,
+  overlayClassName = "bg-accent",
 }: AnimatedButtonProps) => {
   const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
     useMagneticAnimation();
@@ -24,18 +26,24 @@ export const AnimatedButton = ({
     pill: "bg-transparent border-[0.5px] border-gray-500 px-15 py-6 h-auto text-md rounded-full",
   };
 
+  const capturePos = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    setPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   return (
     <div
-      className="cursor-pointer"
-      onMouseMove={(e) => {
-        handleMouseMove(e);
-        const rect = e.currentTarget.getBoundingClientRect();
-        setPos({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        });
+      className="cursor-pointer relative hover:z-10"
+      onMouseEnter={capturePos}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={(e) => {
+        capturePos(e);
+        reset();
       }}
-      onMouseLeave={reset}
     >
       <motion.div
         ref={ref}
@@ -44,7 +52,7 @@ export const AnimatedButton = ({
         animate="rest"
         whileHover="hover"
         className={cn(
-          "relative overflow-hidden", // IMPORTANT
+          "relative overflow-hidden",
           buttonStyles[variant],
           className ?? "",
         )}
@@ -55,14 +63,16 @@ export const AnimatedButton = ({
             hover: { scale: 8 },
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute size-20 bg-accent rounded-full pointer-events-none"
+          className={cn(
+            "absolute size-20 rounded-full pointer-events-none",
+            overlayClassName,
+          )}
           style={{
             top: pos.y,
             left: pos.x,
             translateX: "-50%",
             translateY: "-50%",
           }}
-          whileHover={{ zIndex: 50 }}
         />
 
         <motion.p

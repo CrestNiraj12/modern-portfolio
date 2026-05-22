@@ -1,5 +1,5 @@
 import type { MotionValue } from "motion";
-import type { Ref } from "react";
+import type { RefObject } from "react";
 
 export type TransitionPhase = "intro" | "transition" | "main";
 
@@ -11,7 +11,7 @@ export interface ScrollAnimationReturnType {
 }
 
 export interface MagneticAnimationReturnType {
-  ref: Ref<HTMLDivElement>;
+  ref: RefObject<HTMLDivElement | null>;
   springX: MotionValue<number>;
   springY: MotionValue<number>;
   textX: MotionValue<number>;

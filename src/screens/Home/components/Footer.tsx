@@ -25,6 +25,7 @@ export const Footer = () => {
         <Divider className="bg-gray-700" />
         <AnimatedButton
           text="Get in touch"
+          overlayClassName="bg-black"
           className="absolute -bottom-25 right-20 bg-accent"
         />
       </div>

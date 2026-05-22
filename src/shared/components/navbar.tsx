@@ -8,13 +8,13 @@ export const Navbar = () => {
       </div>
       <div className="flex-2" />
       <ol className="max-w-60 flex-1 flex flex-row items-center justify-between">
-        <li>
+        <li className="flex-1 flex justify-center">
           <NavItem text="Work" />
         </li>
-        <li>
+        <li className="flex-1 flex justify-center">
           <NavItem text="About" />
         </li>
-        <li>
+        <li className="flex-1 flex justify-center">
           <NavItem text="Contact" />
         </li>
       </ol>

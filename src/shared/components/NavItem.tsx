@@ -11,14 +11,15 @@ export const NavItem = ({ text }: NavItemProps) => {
 
   return (
     <motion.div
+      ref={ref}
       initial="rest"
       whileHover="hover"
       animate="rest"
       onMouseMove={handleMouseMove}
       onMouseLeave={reset}
-      className="relative max-w-60 flex-1 flex flex-row items-center justify-between cursor-pointer"
+      className="relative flex items-center justify-center cursor-pointer z-50 px-6 py-2"
     >
-      <motion.div ref={ref} style={{ x: springX, y: springY }}>
+      <motion.div style={{ x: springX, y: springY }}>
         <motion.p style={{ x: textX, y: textY }}>{text}</motion.p>
       </motion.div>
       <motion.div

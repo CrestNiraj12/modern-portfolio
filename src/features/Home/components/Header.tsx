@@ -66,7 +66,7 @@ const Header = ({ velocity }: HeaderProps) => {
     >
       <motion.div
         style={{ y: foregroundY }}
-        className="absolute py-10 px-12 w-full top-0 left-1/2 z-0 -translate-x-1/2 will-change-transform"
+        className="absolute py-10 px-12 w-full top-0 left-1/2 z-20 -translate-x-1/2 will-change-transform"
       >
         <Navbar />
       </motion.div>
