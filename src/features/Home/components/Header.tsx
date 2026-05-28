@@ -91,11 +91,21 @@ const Header = ({ velocity }: HeaderProps) => {
           style={{ y: backgroundY }}
           className="absolute z-0 will-change-transform inset-x-0 bottom-0 h-[90%] lg:inset-x-auto lg:h-auto lg:left-1/2 lg:bottom-0 lg:-translate-x-1/2"
         >
-          <img
-            src={Niraj.src}
-            alt="Niraj Shrestha"
-            className="h-full w-full object-cover object-bottom lg:h-auto lg:w-screen lg:max-h-[105vh] lg:max-w-none lg:object-contain"
-          />
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="h-full w-full will-change-transform"
+          >
+            <img
+              src={Niraj.src}
+              alt="Niraj Shrestha"
+              className="h-full w-full object-cover object-bottom lg:h-auto lg:w-screen lg:max-h-[105vh] lg:max-w-none lg:object-contain"
+            />
+          </motion.div>
         </motion.div>
 
         {/* Software Engineer text — desktop right; mobile bottom-left */}

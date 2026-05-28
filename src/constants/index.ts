@@ -13,9 +13,9 @@ export const greetings = [
 
 export const ANIMATION_CONSTANTS = {
   SCROLL: {
-    stiffness: 220,
-    damping: 42,
-    mass: 0.15,
+    stiffness: 140,
+    damping: 28,
+    mass: 0.25,
     scrollRange: [0, 900] as [number, number],
     foregroundY: {
       reducedMotion: [0, 0] as [number, number],

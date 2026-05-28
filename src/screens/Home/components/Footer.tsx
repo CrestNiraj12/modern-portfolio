@@ -8,17 +8,25 @@ import {
   RevealText,
 } from "@/shared/components";
 import { useMagneticAnimation } from "@/shared/hooks/animation";
-import { motion } from "motion/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useState } from "react";
 
-const GetInTouchCircle = () => {
-  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
-    useMagneticAnimation();
+const GetInTouchCircle = ({ show }: { show: boolean }) => {
+  const {
+    ref,
+    springX,
+    springY,
+    textX,
+    textY,
+    handleMouseMove,
+    handleTouchStart,
+    reset,
+  } = useMagneticAnimation();
 
   return (
     <motion.div
       initial={{ x: "-50vw", opacity: 0 }}
-      whileInView={{ x: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
+      animate={show ? { x: 0, opacity: 1 } : { x: "-50vw", opacity: 0 }}
       transition={{
         duration: 1.1,
         ease: [0.16, 1, 0.3, 1],
@@ -30,31 +38,40 @@ const GetInTouchCircle = () => {
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={reset}
+        onTouchStart={handleTouchStart}
         style={{ x: springX, y: springY }}
         className="will-change-transform"
       >
-        <a
-          href="mailto:crestniraj@gmail.com"
-          className="flex items-center justify-center rounded-full bg-accent size-30 lg:size-50"
-        >
+        <div className="flex items-center justify-center rounded-full bg-accent size-30 lg:size-50 pointer-events-none">
           <motion.span
             style={{ x: textX, y: textY }}
             className="text-white text-sm lg:text-base"
           >
             Get in touch
           </motion.span>
-        </a>
+        </div>
       </motion.div>
     </motion.div>
   );
 };
 
 export const Footer = () => {
+  const { scrollY } = useScroll();
+  const [show, setShow] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (v) => {
+    if (typeof window === "undefined") return;
+    const sH = document.documentElement.scrollHeight;
+    const vh = window.innerHeight;
+    const threshold = sH - vh * 1.75;
+    setShow(v >= threshold);
+  });
+
   return (
     <section className="w-screen h-screen bg-primary flex flex-col justify-center items-start p-6 sm:p-10 lg:p-40">
       <div>
         <div className="flex items-center gap-4 lg:gap-6">
-          <Reveal>
+          <Reveal inView={show}>
             <img
               src={Niraj.src}
               alt="Niraj Shrestha"
@@ -66,6 +83,7 @@ export const Footer = () => {
             className="text-5xl sm:text-6xl lg:text-8xl"
             delay={0.1}
             stagger={0.07}
+            inView={show}
           />
         </div>
         <RevealText
@@ -73,15 +91,16 @@ export const Footer = () => {
           className="text-5xl sm:text-6xl lg:text-8xl"
           delay={0.3}
           stagger={0.07}
+          inView={show}
         />
       </div>
       <div className="relative w-full my-12 lg:my-20">
         <Divider className="bg-gray-700" />
-        <GetInTouchCircle />
+        <GetInTouchCircle show={show} />
       </div>
       <div className="w-full flex flex-col gap-8 lg:gap-6 mt-20 lg:mt-0">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:flex-wrap w-full">
-          <Reveal delay={0.1} className="w-full sm:w-auto">
+          <Reveal delay={0.1} className="w-full sm:w-auto" inView={show}>
             <a href="mailto:crestniraj@gmail.com" className="block w-full">
               <AnimatedButton
                 variant="pill"
@@ -90,7 +109,7 @@ export const Footer = () => {
               />
             </a>
           </Reveal>
-          <Reveal delay={0.2} className="w-full sm:w-auto">
+          <Reveal delay={0.2} className="w-full sm:w-auto" inView={show}>
             <a
               href="https://wa.me/9779821911389"
               target="_blank"
@@ -106,13 +125,13 @@ export const Footer = () => {
           </Reveal>
         </div>
         <div className="flex gap-3">
-          <Reveal delay={0.3}>
+          <Reveal delay={0.3} inView={show}>
             <GitHubLink
               className="border-gray-700 hover:border-white"
               iconClassName="text-white"
             />
           </Reveal>
-          <Reveal delay={0.4}>
+          <Reveal delay={0.4} inView={show}>
             <LinkedInLink
               className="border-gray-700 hover:border-[#0A66C2]"
               iconClassName="text-[#0A66C2]"

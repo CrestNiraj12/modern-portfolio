@@ -14,9 +14,6 @@ import { useRef } from "react";
 
 const {
   SCROLL: {
-    stiffness,
-    damping,
-    mass,
     scrollRange,
     foregroundY: fgY,
     backgroundY: bgY,
@@ -34,25 +31,26 @@ const useScrollAnimation = (): ScrollAnimationReturnType => {
   const { scrollY } = useScroll();
   const shouldReduceMotion = useReducedMotion();
 
-  const smoothScrollY = useSpring(scrollY, {
-    stiffness,
-    damping,
-    mass,
-  });
+  const clampedScrollY = useTransform(scrollY, (v) => Math.max(0, v));
 
   const foregroundY = useTransform(
-    smoothScrollY,
+    clampedScrollY,
     scrollRange,
     shouldReduceMotion ? fgY.reducedMotion : fgY.normal,
   );
 
   const backgroundY = useTransform(
-    smoothScrollY,
+    clampedScrollY,
     scrollRange,
     shouldReduceMotion ? bgY.reducedMotion : bgY.normal,
   );
 
-  return { scrollY, smoothScrollY, foregroundY, backgroundY };
+  return {
+    scrollY,
+    smoothScrollY: clampedScrollY,
+    foregroundY,
+    backgroundY,
+  };
 };
 
 const useMagneticAnimation = (
@@ -78,6 +76,12 @@ const useMagneticAnimation = (
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
+    if (
+      typeof window !== "undefined" &&
+      !window.matchMedia("(pointer: fine)").matches
+    ) {
+      return;
+    }
 
     const rect = ref.current.getBoundingClientRect();
 
@@ -103,7 +107,56 @@ const useMagneticAnimation = (
     y.set(0);
   };
 
-  return { ref, springX, springY, textX, textY, handleMouseMove, reset };
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!ref.current) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const originalCenterX = rect.left + rect.width / 2 - x.get();
+    const originalCenterY = rect.top + rect.height / 2 - y.get();
+
+    const touchRadius = 40;
+
+    const onMove = (event: TouchEvent) => {
+      const t = event.touches[0];
+      if (!t) return;
+      const dx = t.clientX - originalCenterX;
+      const dy = t.clientY - originalCenterY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance <= touchRadius) {
+        x.set(dx);
+        y.set(dy);
+      } else {
+        const ratio = touchRadius / distance;
+        x.set(dx * ratio);
+        y.set(dy * ratio);
+      }
+    };
+
+    const onEnd = () => {
+      x.set(0);
+      y.set(0);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onEnd);
+      window.removeEventListener("touchcancel", onEnd);
+    };
+
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onEnd);
+    window.addEventListener("touchcancel", onEnd);
+  };
+
+  return {
+    ref,
+    springX,
+    springY,
+    textX,
+    textY,
+    handleMouseMove,
+    handleTouchStart,
+    reset,
+  };
 };
 
 export { useMagneticAnimation, useScrollAnimation };

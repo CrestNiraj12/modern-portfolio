@@ -1,6 +1,38 @@
 import { cn } from "@/shared/utils/cn";
-import { motion, useInView } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+
+function useScrollDownReveal(externalInView?: boolean) {
+  const ref = useRef<HTMLElement | null>(null);
+  const [animated, setAnimated] = useState(false);
+  const { scrollY } = useScroll();
+
+  const check = () => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const vh =
+      typeof window === "undefined" ? 0 : window.innerHeight;
+    const isBelow = rect.top >= vh;
+    const isAbove = rect.bottom <= 0;
+    if (isBelow) {
+      setAnimated(false);
+    } else if (!isAbove) {
+      setAnimated(true);
+    }
+  };
+
+  useMotionValueEvent(scrollY, "change", check);
+
+  useEffect(() => {
+    check();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return {
+    ref,
+    inView: externalInView !== undefined ? externalInView : animated,
+  };
+}
 
 interface RevealTextProps {
   text: string;
@@ -9,6 +41,7 @@ interface RevealTextProps {
   stagger?: number;
   duration?: number;
   once?: boolean;
+  inView?: boolean;
 }
 
 export const RevealText = ({
@@ -17,16 +50,18 @@ export const RevealText = ({
   delay = 0,
   stagger = 0.04,
   duration = 0.9,
-  once = true,
+  inView: externalInView,
 }: RevealTextProps) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once, amount: 0.1 });
+  const { ref, inView } = useScrollDownReveal(externalInView);
   const lines = text.split("\n");
 
   let wordCounter = 0;
 
   return (
-    <span ref={ref} className={cn("inline-block", className ?? "")}>
+    <span
+      ref={ref as React.RefObject<HTMLSpanElement>}
+      className={cn("inline-block", className ?? "")}
+    >
       {lines.map((line, li) => {
         const words = line.split(" ");
         return (
@@ -60,7 +95,7 @@ export const RevealText = ({
                     className="inline-block whitespace-pre"
                   >
                     {w}
-                    {i < words.length - 1 ? " " : ""}
+                    {i < words.length - 1 ? " " : ""}
                   </motion.span>
                 </span>
               );
@@ -78,6 +113,7 @@ interface RevealProps {
   className?: string;
   y?: number;
   once?: boolean;
+  inView?: boolean;
 }
 
 export const Reveal = ({
@@ -85,14 +121,13 @@ export const Reveal = ({
   delay = 0,
   className,
   y = 30,
-  once = true,
+  inView: externalInView,
 }: RevealProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once, amount: 0.2 });
+  const { ref, inView } = useScrollDownReveal(externalInView);
 
   return (
     <motion.div
-      ref={ref}
+      ref={ref as React.RefObject<HTMLDivElement>}
       initial={{ y, opacity: 0 }}
       animate={inView ? { y: 0, opacity: 1 } : { y, opacity: 0 }}
       transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}

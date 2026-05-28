@@ -18,14 +18,22 @@ export const AnimatedButton = ({
   overlayClassName = "bg-accent",
   textClassName,
 }: AnimatedButtonProps) => {
-  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
-    useMagneticAnimation();
+  const {
+    ref,
+    springX,
+    springY,
+    textX,
+    textY,
+    handleMouseMove,
+    handleTouchStart,
+    reset,
+  } = useMagneticAnimation();
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
   const buttonStyles = {
     default: "flex justify-center items-center rounded-full bg-black w-50 h-50",
-    pill: "bg-transparent border-[0.5px] border-gray-500 px-15 py-6 h-auto text-md rounded-full",
+    pill: "flex justify-center items-center bg-transparent border-[0.5px] border-gray-500 px-15 py-6 h-auto text-md rounded-full",
   };
 
   const capturePos = (e: React.MouseEvent) => {
@@ -46,6 +54,7 @@ export const AnimatedButton = ({
         capturePos(e);
         reset();
       }}
+      onTouchStart={handleTouchStart}
     >
       <motion.div
         ref={ref}

@@ -7,8 +7,16 @@ interface NavItemProps {
 }
 
 export const NavItem = ({ text, href = "#" }: NavItemProps) => {
-  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
-    useMagneticAnimation();
+  const {
+    ref,
+    springX,
+    springY,
+    textX,
+    textY,
+    handleMouseMove,
+    handleTouchStart,
+    reset,
+  } = useMagneticAnimation();
 
   return (
     <a href={href} className="block">
@@ -19,6 +27,7 @@ export const NavItem = ({ text, href = "#" }: NavItemProps) => {
         animate="rest"
         onMouseMove={handleMouseMove}
         onMouseLeave={reset}
+        onTouchStart={handleTouchStart}
         className="relative flex items-center justify-center cursor-pointer z-50 px-6 py-2"
       >
         <motion.div style={{ x: springX, y: springY }}>

@@ -17,6 +17,7 @@ export interface MagneticAnimationReturnType {
   textX: MotionValue<number>;
   textY: MotionValue<number>;
   handleMouseMove: (e: React.MouseEvent) => void;
+  handleTouchStart: (e: React.TouchEvent) => void;
   reset: () => void;
 }
 

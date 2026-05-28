@@ -16,14 +16,23 @@ export const MagneticIconLink = ({
   children,
   className,
 }: MagneticIconLinkProps) => {
-  const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
-    useMagneticAnimation();
+  const {
+    ref,
+    springX,
+    springY,
+    textX,
+    textY,
+    handleMouseMove,
+    handleTouchStart,
+    reset,
+  } = useMagneticAnimation();
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={reset}
+      onTouchStart={handleTouchStart}
       style={{ x: springX, y: springY }}
       className="inline-block"
     >

@@ -63,11 +63,11 @@ export default function Home({ projects }: HomeProps) {
     if (phase !== "main") return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      duration: 1.6,
+      easing: (t) => 1 - Math.pow(1 - t, 5),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.4,
     });
 
     let rafId = 0;
@@ -77,60 +77,34 @@ export default function Home({ projects }: HomeProps) {
     };
     rafId = requestAnimationFrame(raf);
 
-    const getSections = () =>
-      [
-        curtainRef.current,
-        aboutRef.current,
-        projectsRef.current,
-        spacerRef.current,
-      ].filter((el): el is HTMLElement => el !== null);
+    let isEasingToTop = false;
 
-    const targetY = (el: HTMLElement) =>
-      el.getBoundingClientRect().top + window.scrollY;
-
-    let currentIdx = 0;
-    let isSnapping = false;
-
-    const snapTo = (idx: number) => {
-      const sections = getSections();
-      const clamped = Math.max(0, Math.min(sections.length - 1, idx));
-      if (clamped === currentIdx) return;
-      isSnapping = true;
-      currentIdx = clamped;
-      lenis.scrollTo(targetY(sections[clamped]), {
-        duration: 0.9,
-        easing: (t) => 1 - Math.pow(1 - t, 3),
+    const easeToTop = () => {
+      if (isEasingToTop) return;
+      isEasingToTop = true;
+      lenis.scrollTo(0, {
+        duration: 2.2,
+        easing: (t) => 1 - Math.pow(1 - t, 5),
+        lock: true,
         onComplete: () => {
-          isSnapping = false;
+          isEasingToTop = false;
         },
       });
     };
 
-    const onLenisScroll = ({ scroll }: { scroll: number }) => {
-      if (isSnapping) return;
-      const sections = getSections();
-
-      if (currentIdx < sections.length - 1) {
-        const current = sections[currentIdx];
-        const next = sections[currentIdx + 1];
-        const currentBottom = targetY(current) + current.offsetHeight;
-        const nextTop = targetY(next);
-        const trigger = Math.min(currentBottom, nextTop);
-        if (scroll >= trigger) {
-          snapTo(currentIdx + 1);
-          return;
-        }
-      }
-      if (currentIdx > 0) {
-        const curTop = targetY(sections[currentIdx]);
-        if (scroll < curTop) {
-          snapTo(currentIdx - 1);
-          return;
-        }
-      }
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY >= 0) return;
+      if (isEasingToTop) return;
+      if (window.scrollY <= 0) return;
+      if (window.scrollY > 400) return;
+      e.preventDefault();
+      e.stopPropagation();
+      easeToTop();
     };
-
-    lenis.on("scroll", onLenisScroll);
+    window.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
 
     const idToRef: Record<string, HTMLElement | null | undefined> = {
       work: projectsRef.current,
@@ -146,40 +120,16 @@ export default function Home({ projects }: HomeProps) {
       const el = idToRef[href.slice(1)];
       if (!el) return;
       e.preventDefault();
-      const sections = getSections();
-      const idx = sections.findIndex((s) => s === el);
-      if (idx >= 0) currentIdx = idx;
-      isSnapping = true;
       lenis.scrollTo(el, {
         duration: 1.2,
         easing: (t) => 1 - Math.pow(1 - t, 3),
-        onComplete: () => {
-          isSnapping = false;
-        },
       });
     };
     document.addEventListener("click", onAnchorClick);
 
-    const onKey = (e: KeyboardEvent) => {
-      const sections = getSections();
-      const down = ["ArrowDown", "PageDown", " "].includes(e.key);
-      const up = ["ArrowUp", "PageUp"].includes(e.key);
-      const home = e.key === "Home";
-      const end = e.key === "End";
-      if (!(down || up || home || end)) return;
-      e.preventDefault();
-      if (isSnapping) return;
-      if (down) snapTo(currentIdx + 1);
-      else if (up) snapTo(currentIdx - 1);
-      else if (home) snapTo(0);
-      else if (end) snapTo(sections.length - 1);
-    };
-    window.addEventListener("keydown", onKey);
-
     return () => {
-      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("wheel", onWheel, { capture: true });
       document.removeEventListener("click", onAnchorClick);
-      lenis.off("scroll", onLenisScroll);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };

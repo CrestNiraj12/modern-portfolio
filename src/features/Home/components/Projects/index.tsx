@@ -32,7 +32,14 @@ export const Projects = ({ projects }: ProjectsProps) => {
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            onMouseEnter={() => setHovered(project)}
+            onMouseEnter={() => {
+              if (
+                typeof window === "undefined" ||
+                !window.matchMedia("(pointer: fine)").matches
+              )
+                return;
+              setHovered(project);
+            }}
             className="block w-full lg:cursor-none"
           >
             <Divider />

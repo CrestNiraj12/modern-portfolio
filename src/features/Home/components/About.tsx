@@ -5,9 +5,17 @@ import {
   Reveal,
   RevealText,
 } from "@/shared/components";
-import { forwardRef } from "react";
+import { Sparkles } from "lucide-react";
+import { forwardRef, type ReactNode } from "react";
 
-const languages: { slug: string; label: string; color?: string }[] = [
+type IconEntry = {
+  label: string;
+  slug?: string;
+  color?: string;
+  icon?: ReactNode;
+};
+
+const languages: IconEntry[] = [
   { slug: "typescript", label: "TypeScript", color: "3178C6" },
   { slug: "javascript", label: "JavaScript", color: "F7DF1E" },
   { slug: "python", label: "Python", color: "3776AB" },
@@ -15,31 +23,34 @@ const languages: { slug: string; label: string; color?: string }[] = [
   { slug: "dart", label: "Dart", color: "0175C2" },
 ];
 
-const tools: { slug: string; label: string; color?: string }[] = [
+const tools: IconEntry[] = [
   { slug: "git", label: "Git", color: "F05032" },
   { slug: "neovim", label: "Neovim", color: "57A143" },
   { slug: "anthropic", label: "Claude Code" },
-  { slug: "openai", label: "Codex" },
+  { icon: <Sparkles strokeWidth={1.5} className="size-9" />, label: "Codex" },
   { slug: "docker", label: "Docker", color: "2496ED" },
   { slug: "postgresql", label: "Postgres", color: "4169E1" },
   { slug: "tmux", label: "tmux", color: "1BB91F" },
 ];
 
-const Logo = ({
-  slug,
-  label,
-  color,
-}: {
-  slug: string;
-  label: string;
-  color?: string;
-}) => {
-  const src = color
-    ? `https://cdn.simpleicons.org/${slug}/${color}`
-    : `https://cdn.simpleicons.org/${slug}`;
+const Logo = ({ slug, label, color, icon }: IconEntry) => {
   return (
     <div className="flex flex-col items-center gap-2 w-20">
-      <img src={src} alt={label} className="size-10" />
+      {icon ? (
+        <div className="size-10 flex items-center justify-center text-black">
+          {icon}
+        </div>
+      ) : (
+        <img
+          src={
+            color
+              ? `https://cdn.simpleicons.org/${slug}/${color}`
+              : `https://cdn.simpleicons.org/${slug}`
+          }
+          alt={label}
+          className="size-10"
+        />
+      )}
       <span className="text-xs text-gray-600 text-center leading-tight">
         {label}
       </span>
@@ -114,7 +125,7 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
             </p>
             <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 gap-4 justify-items-center">
               {languages.map((lang, i) => (
-                <Reveal key={lang.slug} delay={i * 0.05}>
+                <Reveal key={lang.label} delay={i * 0.05}>
                   <Logo {...lang} />
                 </Reveal>
               ))}
@@ -126,7 +137,7 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
             </p>
             <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 gap-4 justify-items-center">
               {tools.map((tool, i) => (
-                <Reveal key={tool.slug} delay={i * 0.05}>
+                <Reveal key={tool.label} delay={i * 0.05}>
                   <Logo {...tool} />
                 </Reveal>
               ))}
