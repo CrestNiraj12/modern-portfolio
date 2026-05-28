@@ -138,6 +138,12 @@ export const Footer = () => {
             />
           </Reveal>
         </div>
+        <Reveal delay={0.5} inView={show}>
+          <p className="text-xs text-gray-500 mt-6 lg:mt-10">
+            &copy; {new Date().getFullYear()} Niraj Shrestha. All rights
+            reserved.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

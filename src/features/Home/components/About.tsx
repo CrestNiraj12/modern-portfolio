@@ -73,7 +73,7 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20">
         <div className="flex flex-col gap-6 lg:gap-10">
           <RevealText
-            text={"Software engineer\nfrom Nepal."}
+            text={"Software engineer\nfrom नेपाल."}
             className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl"
             stagger={0.05}
           />

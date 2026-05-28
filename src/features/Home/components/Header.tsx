@@ -138,16 +138,17 @@ const Header = ({ velocity }: HeaderProps) => {
           />
         </motion.div>
 
-        {/* Nepal flag — mobile only, bottom-right (no background) */}
+        {/* Mobile-only: flag + time + Nepali greeting, bottom-right */}
         <motion.div
           style={{ y: foregroundY }}
-          className="lg:hidden absolute right-6 bottom-40 z-10 size-14 will-change-transform"
+          className="lg:hidden absolute right-6 bottom-40 z-10 flex flex-col items-end gap-2 will-change-transform"
         >
           <img
             src={NepalFlag.src}
             alt="Nepal flag"
-            className="h-full w-full object-contain"
+            className="size-12 object-contain"
           />
+          <p className="text-sm text-gray-200 tabular-nums">{time} NPT</p>
         </motion.div>
 
         {/* Marquee — centered vertically and bigger on mobile */}
