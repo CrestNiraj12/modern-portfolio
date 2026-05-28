@@ -70,7 +70,7 @@ export const ProjectCursor = ({ project }: ProjectCursorProps) => {
         opacity: project ? 1 : 0,
       }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="pointer-events-none fixed left-0 top-0 z-[9999] bg-gray-300 shadow-2xl rounded-2xl will-change-transform"
+      className="pointer-events-none fixed left-0 top-0 z-9999 bg-gray-300 shadow-2xl rounded-2xl will-change-transform"
     >
       <div className="relative h-full w-full overflow-hidden rounded-lg bg-gray-200">
         <AnimatePresence initial={false}>

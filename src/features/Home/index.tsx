@@ -1,5 +1,5 @@
 import { greetings } from "@/constants";
-import { Body, Header } from "@/features/Home/components";
+import { About, Header, Projects } from "@/features/Home/components";
 import { Footer } from "@/screens/Home/components/Footer";
 import { RevealText } from "@/shared/components";
 import type { Project, TransitionPhase } from "@/shared/types";
@@ -21,7 +21,7 @@ export default function Home({ projects }: HomeProps) {
   const [phase, setPhase] = useState<TransitionPhase>("intro");
   const velocity = useMotionValue(0);
   const curtainRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const curveRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ export default function Home({ projects }: HomeProps) {
     const getSections = () =>
       [
         curtainRef.current,
-        bodyRef.current,
+        aboutRef.current,
         projectsRef.current,
         spacerRef.current,
       ].filter((el): el is HTMLElement => el !== null);
@@ -132,6 +132,34 @@ export default function Home({ projects }: HomeProps) {
 
     lenis.on("scroll", onLenisScroll);
 
+    const idToRef: Record<string, HTMLElement | null | undefined> = {
+      work: projectsRef.current,
+      about: aboutRef.current,
+      contact: spacerRef.current,
+    };
+
+    const onAnchorClick = (e: MouseEvent) => {
+      const anchor = (e.target as Element | null)?.closest("a");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+      const el = idToRef[href.slice(1)];
+      if (!el) return;
+      e.preventDefault();
+      const sections = getSections();
+      const idx = sections.findIndex((s) => s === el);
+      if (idx >= 0) currentIdx = idx;
+      isSnapping = true;
+      lenis.scrollTo(el, {
+        duration: 1.2,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+        onComplete: () => {
+          isSnapping = false;
+        },
+      });
+    };
+    document.addEventListener("click", onAnchorClick);
+
     const onKey = (e: KeyboardEvent) => {
       const sections = getSections();
       const down = ["ArrowDown", "PageDown", " "].includes(e.key);
@@ -150,6 +178,7 @@ export default function Home({ projects }: HomeProps) {
 
     return () => {
       window.removeEventListener("keydown", onKey);
+      document.removeEventListener("click", onAnchorClick);
       lenis.off("scroll", onLenisScroll);
       cancelAnimationFrame(rafId);
       lenis.destroy();
@@ -170,14 +199,21 @@ export default function Home({ projects }: HomeProps) {
           className="relative z-20 will-change-transform"
         >
           <Header velocity={velocity} />
-          <Body ref={bodyRef} projectsRef={projectsRef} projects={projects} />
+          <About ref={aboutRef} />
+          <div
+            ref={projectsRef}
+            id="work"
+            className="bg-background pt-10 lg:pt-20 pb-4 lg:pb-20"
+          >
+            <Projects projects={projects} />
+          </div>
           <motion.div
             ref={curveRef}
             style={{
               borderBottomLeftRadius: curtainRadius,
               borderBottomRightRadius: curtainRadius,
             }}
-            className="w-full h-[200px] bg-background will-change-[border-radius]"
+            className="w-full h-[35vw] lg:h-[200px] bg-background will-change-[border-radius]"
           />
         </div>
       )}
@@ -185,6 +221,7 @@ export default function Home({ projects }: HomeProps) {
       {phase === "main" && (
         <div
           ref={spacerRef}
+          id="contact"
           aria-hidden
           className="relative z-0 h-screen w-full pointer-events-none"
         />

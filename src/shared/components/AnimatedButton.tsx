@@ -8,6 +8,7 @@ interface AnimatedButtonProps {
   variant?: "default" | "pill";
   className?: string;
   overlayClassName?: string;
+  textClassName?: string;
 }
 
 export const AnimatedButton = ({
@@ -15,6 +16,7 @@ export const AnimatedButton = ({
   variant = "default",
   className,
   overlayClassName = "bg-accent",
+  textClassName,
 }: AnimatedButtonProps) => {
   const { ref, springX, springY, textX, textY, handleMouseMove, reset } =
     useMagneticAnimation();
@@ -77,7 +79,7 @@ export const AnimatedButton = ({
 
         <motion.p
           style={{ x: textX, y: textY }}
-          className="relative z-50 text-white"
+          className={cn("relative z-50 text-white", textClassName ?? "")}
         >
           {text}
         </motion.p>

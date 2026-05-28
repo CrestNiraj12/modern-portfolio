@@ -2,7 +2,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #f6f3f4;
+    --background: #ffffff;
     --foreground: #ededed;
     --primary: #141718;
     --accent: #d33336;
@@ -46,6 +46,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
   overscroll-behavior-y: none;
+}
+
+a:focus,
+a:focus-visible,
+button:focus,
+button:focus-visible {
+  outline: none;
 }
 
 ::-webkit-scrollbar {

@@ -60,25 +60,22 @@ const Header = ({ velocity }: HeaderProps) => {
   });
 
   return (
-    <section
-      className="relative bg-primary grid grid-rows-[20px_1fr] items-center justify-items-center min-h-[105vh] overflow-hidden p-12 pb-20 gap-16"
-    >
+    <section className="relative bg-primary grid grid-rows-[20px_1fr] items-center justify-items-center min-h-[105vh] overflow-hidden p-6 lg:p-12 lg:pb-20 gap-16">
       <motion.div
         style={{ y: foregroundY }}
-        className="absolute py-10 px-12 w-full top-0 left-1/2 z-20 -translate-x-1/2 will-change-transform"
+        className="absolute py-6 px-6 lg:py-10 lg:px-12 w-full top-0 left-1/2 z-20 -translate-x-1/2 will-change-transform"
       >
         <Navbar />
       </motion.div>
+
       <div className="row-start-2 overflow-hidden">
+        {/* Located in Himalayas — desktop only */}
         <motion.div
           style={{ y: foregroundY }}
-          className="absolute left-0 top-1/2 z-10 flex -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vh] min-w-70 h-25 p-4 will-change-transform"
+          className="hidden lg:flex absolute left-0 top-1/2 z-10 -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vh] min-w-70 h-25 p-4 will-change-transform"
         >
-          <div className="flex-auto text-lg/6  pl-8">
-            <RevealText
-              text="Located in the Himalayas"
-              className="text-black"
-            />
+          <div className="flex-auto text-lg/6 pl-8">
+            <RevealText text="Located in the Himalayas" className="text-black" />
           </div>
           <div className="flex-none bg-gray-500 place-items-center h-20 w-20 rounded-full p-4">
             <img
@@ -88,30 +85,48 @@ const Header = ({ velocity }: HeaderProps) => {
             />
           </div>
         </motion.div>
+
+        {/* Photo background */}
         <motion.div
           style={{ y: backgroundY }}
-          className="absolute bottom-0 left-1/2 z-0 -translate-x-1/2 will-change-transform"
+          className="absolute z-0 will-change-transform inset-x-0 bottom-0 h-[90%] lg:inset-x-auto lg:h-auto lg:left-1/2 lg:bottom-0 lg:-translate-x-1/2"
         >
           <img
             src={Niraj.src}
             alt="Niraj Shrestha"
-            className="h-auto w-screen max-h-[105vh] max-w-none object-contain"
+            className="h-full w-full object-cover object-bottom lg:h-auto lg:w-screen lg:max-h-[105vh] lg:max-w-none lg:object-contain"
           />
         </motion.div>
+
+        {/* Software Engineer text — desktop right; mobile bottom-left */}
         <motion.div
           style={{ y: foregroundY }}
-          className="absolute right-30 top-[45vh] z-10 -translate-y-1/2 will-change-transform"
+          className="absolute z-10 will-change-transform left-6 bottom-40 lg:left-auto lg:bottom-auto lg:right-30 lg:top-[45vh] lg:-translate-y-1/2"
         >
           <div>
-            <MoveDownRightIcon strokeWidth={1} size={32} />
+            <MoveDownRightIcon strokeWidth={1} className="size-10 lg:size-8" />
           </div>
           <RevealText
             text={"Software Engineer\n& Fullstack developer"}
-            className="mt-10 text-3xl/12 w-75 text-gray-200"
+            className="mt-4 lg:mt-10 text-3xl/9 lg:text-3xl/12 w-65 lg:w-75 text-gray-200"
             delay={0.15}
           />
         </motion.div>
-        <div className="absolute bottom-25 left-0 right-0 overflow-hidden whitespace-nowrap">
+
+        {/* Nepal flag — mobile only, bottom-right (no background) */}
+        <motion.div
+          style={{ y: foregroundY }}
+          className="lg:hidden absolute right-6 bottom-40 z-10 size-14 will-change-transform"
+        >
+          <img
+            src={NepalFlag.src}
+            alt="Nepal flag"
+            className="h-full w-full object-contain"
+          />
+        </motion.div>
+
+        {/* Marquee — centered vertically and bigger on mobile */}
+        <div className="absolute top-1/2 -translate-y-1/2 lg:translate-y-0 lg:top-auto lg:bottom-25 left-0 right-0 overflow-hidden whitespace-nowrap z-10">
           <motion.div
             ref={containerRef}
             style={{ x }}
@@ -122,9 +137,9 @@ const Header = ({ velocity }: HeaderProps) => {
                 <span
                   key={index}
                   aria-hidden="true"
-                  className="mx-4 shrink-0 text-[10rem] text-gray-200 leading-[1.1]"
+                  className="mx-4 shrink-0 text-[9rem] sm:text-[11rem] lg:text-[10rem] text-gray-200 leading-[1.1]"
                 >
-                  Niraj Shrestha &mdash; Niraj Shrestha &mdash;
+                  Niraj Shrestha · Niraj Shrestha ·
                 </span>
               ))}
             </div>

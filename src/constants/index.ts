@@ -13,17 +13,17 @@ export const greetings = [
 
 export const ANIMATION_CONSTANTS = {
   SCROLL: {
-    stiffness: 140,
-    damping: 28,
-    mass: 0.25,
+    stiffness: 220,
+    damping: 42,
+    mass: 0.15,
     scrollRange: [0, 900] as [number, number],
     foregroundY: {
       reducedMotion: [0, 0] as [number, number],
-      normal: [0, -220] as [number, number],
+      normal: [0, -140] as [number, number],
     },
     backgroundY: {
       reducedMotion: [0, 0] as [number, number],
-      normal: [0, 440] as [number, number],
+      normal: [0, 220] as [number, number],
     },
   },
 
