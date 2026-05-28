@@ -144,8 +144,6 @@ const useMagneticAnimation = (
       window.removeEventListener("touchcancel", onEnd);
     };
 
-    e.preventDefault();
-    e.stopPropagation();
     window.addEventListener("touchmove", onMove, {
       passive: false,
       capture: true,
