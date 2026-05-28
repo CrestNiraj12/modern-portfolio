@@ -119,6 +119,8 @@ const useMagneticAnimation = (
     const touchRadius = 40;
 
     const onMove = (event: TouchEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
       const t = event.touches[0];
       if (!t) return;
       const dx = t.clientX - originalCenterX;
@@ -137,12 +139,17 @@ const useMagneticAnimation = (
     const onEnd = () => {
       x.set(0);
       y.set(0);
-      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchmove", onMove, { capture: true });
       window.removeEventListener("touchend", onEnd);
       window.removeEventListener("touchcancel", onEnd);
     };
 
-    window.addEventListener("touchmove", onMove, { passive: true });
+    e.preventDefault();
+    e.stopPropagation();
+    window.addEventListener("touchmove", onMove, {
+      passive: false,
+      capture: true,
+    });
     window.addEventListener("touchend", onEnd);
     window.addEventListener("touchcancel", onEnd);
   };
