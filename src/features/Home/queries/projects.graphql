@@ -3,10 +3,11 @@ query GetPinnedProjects {
     pinnedItems(first: 4, types: REPOSITORY) {
       nodes {
         ... on Repository {
-          id 
+          id
           name
           description
           url
+          openGraphImageUrl
         }
       }
     }

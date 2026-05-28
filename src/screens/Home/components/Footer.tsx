@@ -1,42 +1,59 @@
 import Niraj from "@/assets/niraj.png";
-import { AnimatedButton, Divider } from "@/shared/components";
-import { useScrollAnimation } from "@/shared/hooks/animation";
-import { motion } from "motion/react";
+import {
+  AnimatedButton,
+  Divider,
+  Reveal,
+  RevealText,
+} from "@/shared/components";
 
 export const Footer = () => {
-  const { foregroundY } = useScrollAnimation();
-
   return (
-    <motion.section
-      style={{ y: foregroundY }}
-      className="w-screen h-screen bg-primary flex flex-col justify-center items-start p-40 will-change-transform snap-y snap-mandatory"
-    >
-      <div className="relative wrap-break-word whitespace-normal max-w-xl">
-        <div className="inline-block size-18 xl:size-20 top-2">
-          <img
-            src={Niraj.src}
-            alt="Niraj Shrestha"
-            className="h-full w-full max-w-none object-contain rounded-full bg-gray-400"
+    <section className="w-screen h-screen bg-primary flex flex-col justify-center items-start p-40">
+      <div>
+        <div className="flex items-center gap-6">
+          <Reveal>
+            <img
+              src={Niraj.src}
+              alt="Niraj Shrestha"
+              className="size-18 xl:size-20 object-contain rounded-full bg-gray-400 shrink-0"
+            />
+          </Reveal>
+          <RevealText
+            text="Let's work"
+            className="text-8xl"
+            delay={0.1}
+            stagger={0.07}
           />
         </div>
-        <span className="text-8xl"> Let's work together</span>
+        <RevealText
+          text="together"
+          className="text-8xl"
+          delay={0.3}
+          stagger={0.07}
+        />
       </div>
       <div className="relative w-full my-20">
         <Divider className="bg-gray-700" />
-        <AnimatedButton
-          text="Get in touch"
-          overlayClassName="bg-black"
-          className="absolute -bottom-25 right-20 bg-accent"
-        />
+        <Reveal delay={0.2} className="absolute -bottom-25 right-20">
+          <AnimatedButton
+            text="Get in touch"
+            overlayClassName="bg-black"
+            className="bg-accent"
+          />
+        </Reveal>
       </div>
       <div className="flex gap-2">
-        <AnimatedButton variant="pill" text="crestniraj@gmail.com" />
-        <AnimatedButton
-          variant="pill"
-          text="+977 98 219 11389"
-          className="px-10"
-        />
+        <Reveal delay={0.1}>
+          <AnimatedButton variant="pill" text="crestniraj@gmail.com" />
+        </Reveal>
+        <Reveal delay={0.2}>
+          <AnimatedButton
+            variant="pill"
+            text="+977 98 219 11389"
+            className="px-10"
+          />
+        </Reveal>
       </div>
-    </motion.section>
+    </section>
   );
 };

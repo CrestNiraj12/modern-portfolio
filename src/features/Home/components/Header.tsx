@@ -1,6 +1,6 @@
 import NepalFlag from "@/assets/nepal.gif";
 import Niraj from "@/assets/niraj.png";
-import { Navbar } from "@/shared/components";
+import { Navbar, RevealText } from "@/shared/components";
 import { useScrollAnimation } from "@/shared/hooks/animation";
 import { MoveDownRightIcon } from "lucide-react";
 import {
@@ -60,8 +60,7 @@ const Header = ({ velocity }: HeaderProps) => {
   });
 
   return (
-    <motion.section
-      style={{ y: foregroundY }}
+    <section
       className="relative bg-primary grid grid-rows-[20px_1fr] items-center justify-items-center min-h-[105vh] overflow-hidden p-12 pb-20 gap-16"
     >
       <motion.div
@@ -76,7 +75,10 @@ const Header = ({ velocity }: HeaderProps) => {
           className="absolute left-0 top-1/2 z-10 flex -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vh] min-w-70 h-25 p-4 will-change-transform"
         >
           <div className="flex-auto text-lg/6  pl-8">
-            <p className="text-black">Located in the Himalayas</p>
+            <RevealText
+              text="Located in the Himalayas"
+              className="text-black"
+            />
           </div>
           <div className="flex-none bg-gray-500 place-items-center h-20 w-20 rounded-full p-4">
             <img
@@ -103,10 +105,11 @@ const Header = ({ velocity }: HeaderProps) => {
           <div>
             <MoveDownRightIcon strokeWidth={1} size={32} />
           </div>
-          <p className="mt-10 text-3xl/12 w-75 text-gray-200">
-            Software Engineer
-            <br />& Fullstack developer
-          </p>
+          <RevealText
+            text={"Software Engineer\n& Fullstack developer"}
+            className="mt-10 text-3xl/12 w-75 text-gray-200"
+            delay={0.15}
+          />
         </motion.div>
         <div className="absolute bottom-25 left-0 right-0 overflow-hidden whitespace-nowrap">
           <motion.div
@@ -128,7 +131,7 @@ const Header = ({ velocity }: HeaderProps) => {
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

@@ -18,14 +18,37 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  overscroll-behavior-y: none;
+  background: var(--primary);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
 body {
-  background: var(--background);
+  background: var(--primary);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
-::webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
 }
 
