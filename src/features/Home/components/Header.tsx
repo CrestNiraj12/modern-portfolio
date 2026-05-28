@@ -10,7 +10,15 @@ import {
   useMotionValue,
   useSpring,
 } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const getKtmTime = () =>
+  new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kathmandu",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date());
 
 interface HeaderProps {
   velocity: MotionValue<number>;
@@ -22,6 +30,12 @@ const Header = ({ velocity }: HeaderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollDirectionRef = useRef(1);
   const lastScrollY = useRef(1);
+  const [time, setTime] = useState(getKtmTime);
+
+  useEffect(() => {
+    const id = window.setInterval(() => setTime(getKtmTime()), 30 * 1000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const smoothVelocity = useSpring(velocity, {
     stiffness: 200,
@@ -74,8 +88,9 @@ const Header = ({ velocity }: HeaderProps) => {
           style={{ y: foregroundY }}
           className="hidden lg:flex absolute left-0 top-1/2 z-10 -translate-y-[15vh] items-center rounded-r-full bg-gray-400 w-[16vh] min-w-70 h-25 p-4 will-change-transform"
         >
-          <div className="flex-auto text-lg/6 pl-8">
-            <RevealText text="Located in the Himalayas" className="text-black" />
+          <div className="flex-auto pl-8 text-black leading-tight">
+            <p className="text-xl font-medium tabular-nums">{time}</p>
+            <p className="text-sm text-gray-700">Kathmandu, NPT</p>
           </div>
           <div className="flex-none bg-gray-500 place-items-center h-20 w-20 rounded-full p-4">
             <img

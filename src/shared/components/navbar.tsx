@@ -5,8 +5,8 @@ import { createPortal } from "react-dom";
 import { NavItem } from "./NavItem";
 
 const links = [
-  { text: "Work", href: "#work" },
   { text: "About", href: "#about" },
+  { text: "Work", href: "#work" },
   { text: "Contact", href: "#contact" },
 ];
 
@@ -28,8 +28,12 @@ export const Navbar = () => {
   return (
     <nav className="w-full flex flex-row justify-between items-center text-gray-200">
       <div className="flex-1">
-        <a href="/">
-          <p>&copy; Niraj Shrestha</p>
+        <a href="/" aria-label="Niraj Shrestha">
+          <img
+            src="/niraj-logo.png"
+            alt="Niraj Shrestha"
+            className="h-8 lg:h-10 w-auto"
+          />
         </a>
       </div>
 
@@ -62,8 +66,16 @@ export const Navbar = () => {
                 className="fixed inset-0 z-[100] bg-primary text-white flex flex-col"
               >
                 <div className="flex justify-between items-center px-6 py-6">
-                  <a href="/" onClick={() => setOpen(false)}>
-                    <p>&copy; Niraj Shrestha</p>
+                  <a
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    aria-label="Niraj Shrestha"
+                  >
+                    <img
+                      src="/niraj-logo.png"
+                      alt="Niraj Shrestha"
+                      className="h-8 w-auto"
+                    />
                   </a>
                   <button
                     type="button"
@@ -74,7 +86,7 @@ export const Navbar = () => {
                     <X size={28} />
                   </button>
                 </div>
-                <ol className="flex flex-col gap-6 px-8 mt-20 text-6xl">
+                <ol className="flex flex-col gap-10 px-8 mt-20 text-6xl">
                   {links.map((l, i) => (
                     <motion.li
                       key={l.href}
