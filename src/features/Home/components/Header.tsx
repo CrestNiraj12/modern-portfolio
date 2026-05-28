@@ -118,6 +118,9 @@ const Header = ({ velocity }: HeaderProps) => {
             <img
               src={Niraj.src}
               alt="Niraj Shrestha"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               className="h-full w-full object-cover object-bottom lg:h-auto lg:w-screen lg:max-h-[105vh] lg:max-w-none lg:object-contain"
             />
           </motion.div>
