@@ -26,16 +26,16 @@ export default function Home({ projects }: HomeProps) {
   const curveRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: curveRef,
-    offset: ["start end", "start start"],
-  });
+  const { scrollY } = useScroll();
 
-  const curtainRadius = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["100%", "0%"],
-  );
+  const curtainRadius = useTransform(scrollY, () => {
+    const curve = curveRef.current;
+    if (typeof window === "undefined" || !curve) return "100%";
+    const rect = curve.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = Math.max(0, Math.min(1, (vh - rect.top) / vh));
+    return `${(1 - progress) * 100}%`;
+  });
 
   useEffect(() => {
     if (index < greetings.length) {
