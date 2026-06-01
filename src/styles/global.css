@@ -1,12 +1,10 @@
 @import "tailwindcss";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #ededed;
-    --primary: #141718;
-    --accent: #d33336;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #ededed;
+  --primary: #141718;
+  --accent: #d33336;
 }
 
 @theme inline {
